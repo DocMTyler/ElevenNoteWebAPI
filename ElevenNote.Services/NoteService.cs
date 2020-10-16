@@ -12,6 +12,7 @@ namespace ElevenNote.Services
     public class NoteService
     {
         private readonly Guid _userID;
+        private int NoteID;
 
         public NoteService(Guid userID)
         {
@@ -91,6 +92,21 @@ namespace ElevenNote.Services
                 entity.Title = model.Title;
                 entity.Content = model.Content;
                 entity.ModifiedUtc = DateTimeOffset.UtcNow;
+
+                return ctx.SaveChanges() == 1;
+            }
+        }
+
+        public bool DeleteNote(int noteID)
+        {
+            using (var ctx = new ApplicationDbContext())
+            {
+                var entity =
+                    ctx
+                        .Notes
+                        .Single(e => e.NoteID == noteID && e.OwnerID == _userID);
+
+                ctx.Notes.Remove(entity);
 
                 return ctx.SaveChanges() == 1;
             }
