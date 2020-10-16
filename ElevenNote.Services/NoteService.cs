@@ -33,7 +33,6 @@ namespace ElevenNote.Services
             {
                 ctx.Notes.Add(entity);
                 return ctx.SaveChanges() == 1;
-
             }
 
         }
